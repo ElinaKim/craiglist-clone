@@ -15,11 +15,24 @@ db = SQLAlchemy(app)
 
 #conn_str = os.getenv("CONN_STR")
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.VARCHAR(80), unique = True, nullable = False)
+    email = db.Column(db.VARCHAR(120), unique = True, nullable = False)
+
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+    
+    def __repr__(self):
+        return '<User %r>' %self.username
 
 @app.route('/')
 def index():
     return 'Hello World'
 
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run()
